@@ -9,6 +9,10 @@ import { map } from 'rxjs/operators';
 import { plainToInstance } from 'class-transformer';
 //강의에서는 plainToClass를 사용하고 있으나 deprecated됨
 
+export function Serialize(dto: any) {
+  return UseInterceptors(new SerializeInterceptor(dto));
+}
+
 export class SerializeInterceptor implements NestInterceptor {
   constructor(private dto: any) {}
 
