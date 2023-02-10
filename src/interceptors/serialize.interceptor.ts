@@ -9,7 +9,11 @@ import { map } from 'rxjs/operators';
 import { plainToInstance } from 'class-transformer';
 //강의에서는 plainToClass를 사용하고 있으나 deprecated됨
 
-export function Serialize(dto: any) {
+interface ClassConstructor {
+  new (...args: any[]): {};
+}
+
+export function Serialize(dto: ClassConstructor) {
   return UseInterceptors(new SerializeInterceptor(dto));
 }
 
