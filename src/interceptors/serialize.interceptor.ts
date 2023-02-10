@@ -1,0 +1,30 @@
+import {
+  UseInterceptors,
+  NestInterceptor,
+  ExecutionContext,
+  CallHandler,
+} from '@nestjs/common';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { plainToInstance } from 'class-transformer';
+//강의에서는 plainToClass를 사용하고 있으나 deprecated됨
+import { UserDto } from '../users/dtos/user.dto';
+
+export class SerializeInterceptor implements NestInterceptor {
+  intercept(
+    context: ExecutionContext,
+    next: CallHandler<any>, // 강의에서는 handler라는 인자 이름 사용
+  ): Observable<any> | Promise<Observable<any>> {
+    // Run something before a request is handled
+    // by the request handler
+
+    return next.handle().pipe(
+      map((data: any) => {
+        // Run Something before the response is sent out
+        return plainToInstance(UserDto, data, {
+          excludeExtraneousValues: true,
+        });
+      }),
+    );
+  }
+}
