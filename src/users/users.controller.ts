@@ -36,17 +36,21 @@ export class UsersController {
   }
 
   @Post('/signup')
-  createUser(@Body() body: CreateUserDto) {
+  async createUser(@Body() body: CreateUserDto, @Session() session: any) {
     const { email, password } = body;
+    const user = await this.authService.signup(email, password);
+    session.userId = user.id;
 
-    return this.authService.signup(email, password);
+    return user;
   }
 
-  @Post('signin')
-  signin(@Body() body: CreateUserDto) {
+  @Post('/signin')
+  async signin(@Body() body: CreateUserDto, @Session() session: any) {
     const { email, password } = body;
+    const user = await this.authService.signin(email, password);
+    session.userId = user.id;
 
-    return this.authService.signin(email, password);
+    return user;
   }
 
   // @UseInterceptors(new SerializeInterceptor(UserDto))
