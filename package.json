@@ -72,5 +72,10 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "material-icon-theme.files.associations": {
+    "*.ts": "typescript",
+    "**.json": "json",
+    "**.**.ts": "nestjs"
   }
 }
