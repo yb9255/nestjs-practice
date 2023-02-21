@@ -2,6 +2,7 @@ import { Test } from '@nestjs/testing';
 import { AuthService } from './auth.service';
 import { User } from './user.entity';
 import { UsersService } from './users.service';
+import { IDENTIFIER } from './auth.service';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -28,5 +29,14 @@ describe('AuthService', () => {
 
   it('can create an instance of a service', async () => {
     expect(service).toBeDefined();
+  });
+
+  it('creates a new user with a salted and hashed password', async () => {
+    const user = await service.signup('asdf@asdf.com', 'asdf1234!');
+    expect(user.password).not.toEqual('asdf1234!');
+
+    const [salt, hash] = user.password.split(IDENTIFIER);
+    expect(salt).toBeDefined();
+    expect(hash).toBeDefined();
   });
 });

@@ -7,9 +7,10 @@ import { UsersService } from './users.service';
 import { randomBytes, scrypt as _scrypt } from 'crypto';
 import { promisify } from 'util';
 
+export const HASH_LENGTH = 32;
+export const IDENTIFIER = '.';
+
 const scrypt = promisify(_scrypt);
-const HASH_LENGTH = 32;
-const IDENTIFIER = '.';
 
 @Injectable()
 export class AuthService {
