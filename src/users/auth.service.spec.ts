@@ -3,8 +3,9 @@ import { AuthService } from './auth.service';
 import { User } from './user.entity';
 import { UsersService } from './users.service';
 
-it('can create an instance of a service', async () => {
-  // create fake copy of users service
+describe('AuthService', () => {
+  let service: AuthService;
+
   const fakeUsersService: Partial<UsersService> = {
     findBy: () => Promise.resolve([]),
     create: (email: string, password: string) => {
@@ -12,14 +13,20 @@ it('can create an instance of a service', async () => {
     },
   };
 
-  const module = await Test.createTestingModule({
-    providers: [
-      AuthService,
-      { provide: UsersService, useValue: fakeUsersService },
-    ],
-  }).compile();
+  beforeEach(async () => {
+    // create fake copy of users service
 
-  const service = module.get(AuthService);
+    const module = await Test.createTestingModule({
+      providers: [
+        AuthService,
+        { provide: UsersService, useValue: fakeUsersService },
+      ],
+    }).compile();
 
-  expect(service).toBeDefined();
+    service = module.get(AuthService);
+  });
+
+  it('can create an instance of a service', async () => {
+    expect(service).toBeDefined();
+  });
 });
