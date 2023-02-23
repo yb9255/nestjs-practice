@@ -10,11 +10,24 @@ describe('AuthService', () => {
   let fakeUsersService: Partial<UsersService>;
 
   beforeEach(async () => {
+    const users: User[] = [];
+
     // create fake copy of users service
     fakeUsersService = {
-      findBy: () => Promise.resolve([]),
+      findBy: (email: string) => {
+        const filteredUser = users.filter((user) => user.email === email);
+        return Promise.resolve(filteredUser);
+      },
       create: (email: string, password: string) => {
-        return Promise.resolve({ id: 1, email, password } as User);
+        const user = {
+          id: users.length,
+          email,
+          password,
+        } as User;
+
+        users.push(user);
+
+        return Promise.resolve(user);
       },
     };
 
@@ -63,5 +76,12 @@ describe('AuthService', () => {
     await expect(service.signin('abcd@abcd.com', '54321')).rejects.toThrow(
       BadRequestException,
     );
+  });
+
+  it('returns user if correct password is provided', async () => {
+    await service.signup('fasdf@fasdf.com', '12345');
+    const user = await service.signin('fasdf@fasdf.com', '12345');
+
+    expect(user).toBeDefined();
   });
 });
