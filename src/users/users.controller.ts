@@ -61,8 +61,8 @@ export class UsersController {
     return user;
   }
 
-  @Post('/signin')
-  async signin(@Body() body: CreateUserDto, @Session() session: any) {
+  @Post('/sign-in')
+  async signIn(@Body() body: CreateUserDto, @Session() session: any) {
     const { email, password } = body;
     const user = await this.authService.signin(email, password);
     session.userId = user.id;
@@ -70,8 +70,8 @@ export class UsersController {
     return user;
   }
 
-  @Post('/signout')
-  async signout(@Session() session: any) {
+  @Post('/sign-out')
+  async signOut(@Session() session: any) {
     session.userId = null;
   }
 

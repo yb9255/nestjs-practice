@@ -74,7 +74,7 @@ describe('UsersController', () => {
   it('signin updates session object and returns user', async () => {
     const session = { userId: -10 };
 
-    const user = await controller.signin(
+    const user = await controller.signIn(
       { email: 'asdf@asdf.com', password: '12345' },
       session,
     );
